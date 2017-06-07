@@ -13,8 +13,14 @@ class RunController extends Controller
         $lineItemKey = '//ul[@class="segmented-list results-list"]/li[contains(@id, "result-")]';
         $crawler = GoutteFacade::request('GET', 'https://www.expedia.ca/service/');
         $crawler->filterXPath($lineItemKey) -> each(function ($node) {
-//            dd($node->text());
-            Topic::create(['id' => $node->attr('id'), 'title' => $node->text()]);
+            $topicId = substr ($node -> attr('id'), -3 );
+            $topicTitle = $node->children()->text();
+            $topicUrl = 'https://www.expedia.ca/service/#/articles/' . $topicId;
+            $topic = new Topic;
+            $topic -> id = $topicId;
+            $topic->title = $topicTitle;
+            $topic->url = $topicUrl;
+            $topic -> save();
         });
         return view('welcome');
     }
