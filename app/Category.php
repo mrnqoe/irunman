@@ -7,5 +7,5 @@ use Dimsav\Translatable\Translatable;
 
 class Category extends Model
 {
-    //
+    protected $fillable = ['id', 'title', 'url'];
 }
